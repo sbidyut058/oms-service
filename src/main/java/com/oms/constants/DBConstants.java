@@ -19,7 +19,11 @@ public class DBConstants {
 		
 	}
 	
+	public static final String TABLE_EMPLOYEE_DETAILS = "employee_details";
+	public static final String TABLE_USER_DETAILS = "user_details";
 	
+	
+	public static final String TABLE_LINK_EMPLOYEE_DETAILS_AND_USER_DETAILS = "link_employee_details_user_details";
 	
 
 }

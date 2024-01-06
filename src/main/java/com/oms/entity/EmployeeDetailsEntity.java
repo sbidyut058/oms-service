@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.oms.entity;
 
 import java.util.Date;
@@ -20,52 +23,42 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-
+/**
+ * @author prady
+ *
+ */
 @Getter
 @Setter
 @Accessors(chain=true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = DBConstants.TABLE_LINK_EMPLOYEE_DETAILS_AND_USER_DETAILS)
-public class LinkEmployeeDetailsAndUserDetailsEntity {
-
+@Table(name = DBConstants.TABLE_EMPLOYEE_DETAILS)
+public class EmployeeDetailsEntity {
+	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private Long id;
+	public Long id;
 	
-	@Column(name = "EMP_ID")
-	private Long empId;
-
-	@Column(name = "USER_ID")
-	private Long userId;
 	
-	@Column(name = "LINK_DATE")
-	private Date linkDate;	
 	
-	@Column(name = "UNLINK_DATE")
-	private Date unlinkDate;	
+	// More fields need to add here.......
 	
-	@Column(name = "IS_DELETED", columnDefinition = "false")
-	private Boolean isDeleted;
 	
-	@Column(name = "IS_ACTIVE", columnDefinition = "true")
-	private Boolean isActive;
+	
 	
 	@Column(name = "CREATED_BY")
-	private Long createdBy;	
+	public Long createdBy;	
 	
 	@Column(name = "CREATED_DATE")
 	@CreationTimestamp
-	private Date createdDate;
+	public Date createdDate;
 	
 	@Column(name = "MODIFIED_BY")
-	private Long modifiedBy;	
+	public Long modifiedBy;	
 	
 	@Column(name = "MODIFIED_DATE")
 	@UpdateTimestamp
-	private Date modifiedDate;	
-	
-	
+	public Date modifiedDate;	
 }
