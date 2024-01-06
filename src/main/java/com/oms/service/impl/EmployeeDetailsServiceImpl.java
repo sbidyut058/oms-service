@@ -2,6 +2,8 @@ package com.oms.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +12,9 @@ import com.oms.dbquery.DBQueryExecuter;
 import com.oms.dbquery.QueryMaker;
 import com.oms.dto.RequestParamDTO;
 import com.oms.entity.EmployeeDetailsEntity;
+import com.oms.exception.NoRecordFoundException;
+import com.oms.exception.RecordIdNotFoundException;
 import com.oms.repository.EmployeeDetailsRepository;
-import com.oms.bean.UserContext;
 import com.oms.utils.Utils;
 import com.oms.constants.ApiConstants;
 import com.oms.dto.ApiResponseEntity;
@@ -51,7 +54,7 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService {
 		}
 		
 			
-		employeeDetailsRepository.save(employeeDetailsEntity);
+		employeeDetailsEntity = employeeDetailsRepository.save(employeeDetailsEntity);
 			
 		BeanUtils.copyProperties(employeeDetailsEntity, employeeDetailsDTO);	
 		
@@ -65,6 +68,38 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService {
 		List<EmployeeDetailsDTO> rtnList = dbQueryExecuter.executeQuery(new QueryMaker<EmployeeDetailsDTO>(reqParamDto, EmployeeDetailsDTO.class));
 		
 		return new ApiResponseEntity(ApiConstants.RESP_STATUS_SUCCESS, rtnList);
+	}
+	
+	@Override
+	public ApiResponseEntity getById (Long id) {
+//		UserContext userContext = Utils.getUserContext();
+
+		if(id != null && id > 0) {
+			EmployeeDetailsEntity entity = employeeDetailsRepository.findById(id).orElse(null);
+			if(entity != null) {
+				EmployeeDetailsDTO dto = new EmployeeDetailsDTO();
+				BeanUtils.copyProperties(entity, dto);
+				return new ApiResponseEntity(ApiConstants.RESP_STATUS_SUCCESS, dto);
+			}
+			throw new NoRecordFoundException(ApiConstants.STATUS_MESSAGE.get(ApiConstants.RESP_STATUS_NO_RECORD_FOUND_EXCEPTION));
+		}
+		throw new RecordIdNotFoundException(ApiConstants.STATUS_MESSAGE.get(ApiConstants.RESP_STATUS_RECORD_ID_NOT_FOUND_EXCEPTION));
+	}
+	
+	@Transactional
+	@Override
+	public ApiResponseEntity deleteMultipleById (List<Long> ids) {
+//		UserContext userContext = Utils.getUserContext();
+
+		if(ids != null && !ids.isEmpty()) {
+			for(Long id:ids) {
+				if(id != null && id > 0) {
+					employeeDetailsRepository.softDeleteById(id);
+				}
+			}
+			return new ApiResponseEntity(ApiConstants.RESP_STATUS_SUCCESS, ApiConstants.STATUS_MESSAGE.get(ApiConstants.RESP_STATUS_SUCCESS));
+		}
+		throw new RecordIdNotFoundException(ApiConstants.STATUS_MESSAGE.get(ApiConstants.RESP_STATUS_RECORD_ID_NOT_FOUND_EXCEPTION));
 	}
 
 }

@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -52,8 +50,8 @@ public class UserDetailsEntity {
 	@Column(name = "LAST_NAME")
 	private String lastName;	
 	
-	@Column(name = "ADHAR_CARD_NO")
-	private String adharCardNo;	
+	@Column(name = "AADHAR_CARD_NO")
+	private String aadharCardNo;	
 	
 	@Column(name = "USER_ADDRESS")
 	private String userAddress;
